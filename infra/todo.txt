@@ -1,0 +1,7 @@
+az login
+az account set --subscription "Visual Studio Professional"
+
+
+ACR: acrubfnapz7jln3i.azurecr.io
+
+az acr login --name macrubfnapz7jln3i 

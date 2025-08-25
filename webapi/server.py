@@ -10,7 +10,7 @@ async def verify_api_key(request: Request, call_next):
     return await call_next(request)
 
 def verify_api_key_depends(x_api_key: str = Header(...)):
-    if x_api_key != "your-secret-key":
+    if x_api_key != API_KEY:
         raise HTTPException(status_code=403, detail="Invalid API Key")
 
 @app.get("/")
