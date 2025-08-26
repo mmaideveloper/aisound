@@ -21,7 +21,7 @@ CONTAINER_APP_NAME="api-ai-sound-local"
 
 IMAGE_NAME="apiaisound"
 
-IMAGE_TAG="webapi-v2"
+IMAGE_TAG="$VERSION"
 
 
 ACR_LOGIN_SERVER="${ACR_NAME}.azurecr.io"
