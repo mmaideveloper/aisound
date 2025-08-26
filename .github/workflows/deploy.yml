@@ -1,0 +1,47 @@
+name: Deploy FastAPI to Azure Container Apps
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_RESOURCE_GROUP: your-resource-group
+  AZURE_SUBSCRIPTION_ID: your-subscription-id
+  AZURE_LOCATION: westeurope
+  ACR_NAME: youracrname
+  CONTAINER_APP_NAME: your-container-app
+  BICEP_FILE: infra/main.bicep
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy infrastructure with Bicep
+      run: |
+        az account set --subscription $AZURE_SUBSCRIPTION_ID
+        az deployment group create \
+          --resource-group $AZURE_RESOURCE_GROUP \
+          --template-file $BICEP_FILE \
+          --parameters acrName=$ACR_NAME containerAppName=$CONTAINER_APP_NAME location=$AZURE_LOCATION
+
+    - name: Build and push Docker image
+      run: |
+        IMAGE_TAG=${{ github.sha }}
+        az acr build --registry $ACR_NAME --image $CONTAINER_APP_NAME:$IMAGE_TAG .
+
+    - name: Update Azure Container App
+      run: |
+        az containerapp update \
+          --name $CONTAINER_APP_NAME \
+          --resource-group $AZURE_RESOURCE_GROUP \
+          --image $ACR_NAME.azurecr.io/$CONTAINER_APP_NAME:${{ github.sha }}

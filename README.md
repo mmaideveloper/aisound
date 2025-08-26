@@ -38,6 +38,24 @@ docker rmi -f $(docker images -aq)
 
 #Install to Azure Container App
 
+ci/cd github
+- create azure credentials
+
+AZURE_CREDENTIALS: A JSON object from az ad sp create-for-rbac --name "github-deployer" --sdk-auth
+
+
+---
+FastApi  /docs - shows inbuild swagger
+
+---
+get logs
+
+az containerapp logs show \
+  --name api-ai-sound-local \
+  --resource-group rg-ai-sound \
+  --type console \
+  --follow
+
 
 
 
