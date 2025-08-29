@@ -1,0 +1,8 @@
+1. database to temp storage for user input images/audtio + description
+2. models - multiple
+
+    insert detection
+    bee type and  illness detection
+    bee predator detection?
+
+    

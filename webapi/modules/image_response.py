@@ -6,3 +6,4 @@ class ImageProcessingResponse(BaseModel):
     filename: str
     stored_as: str
     metadata: dict
+    response: dict
