@@ -38,3 +38,5 @@ async def process_image(image_path):
 
     except Exception as e:
         return build_response(success=False, error=str(e))
+
+

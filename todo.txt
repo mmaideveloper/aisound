@@ -1,8 +1,39 @@
-1. database to temp storage for user input images/audtio + description
+
 2. models - multiple
 
     insert detection
     bee type and  illness detection
     bee predator detection?
 
-    
+
+3. store images + labels
+    what labels( localtion, time, temperature, weather ...? )
+    ask bee keeper.
+
+4.  process images for train model 
+    web-> login, show images + labels ( from storage)
+    approve images -> add to DB , add to scheduler for model training
+
+5.  prepare scheduler = how to train model, how to get train model results
+     accuracy, f1, prediction,.....
+    Define test sample for 
+    approve new model -> web 
+
+-------------------
+
+Model Selection
+
+Use a pre-trained model or train your own using datasets like:
+
+Honey Bee Annotated Image Dataset – includes varroa mite detection
+
+Insect Detect Classification – general insect classification
+
+You can use:
+
+YOLOv5 or YOLOv8 for object detection
+
+CNN (e.g., ResNet, EfficientNet) for classification and illness detection
+
+
+1. database to temp storage for user input images/audtio + description

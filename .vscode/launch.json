@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "Debug FastAPI with Uvicorn/Conda",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "server:app",        // Replace with your actual app path
+        "--reload",
+        "--port", "8000"
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/webapi"
+      }
+    }
+  ]
+}

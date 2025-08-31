@@ -7,50 +7,54 @@ from modules.image_request import ImageMetadata
 from modules.image_response import ImageProcessingResponse
 from services.image_processor_service import process_image
 from services.logger_service import get_logger
-
+from services.image_save_service import save_image_and_metadata
 router = APIRouter()
-
-TEMP_DIR = "./temp"
-os.makedirs(TEMP_DIR, exist_ok=True)
 
 logger = get_logger("aisound-image-processing")
 
-@router.post("/imageProcessing", tags=["Image"])
+@router.post("/images/processing", 
+             summary="Analyze and process an uploaded image for model trainging.",
+    description="Return recognition per current model and store image for future training.",
+             tags=["Image"])
 async def process_image_recognition(
     image: UploadFile = File(...),
     metadata: ImageMetadata = Depends()
 ):
-    # Validate image type
-    #if image.content_type != "image/jpeg" or image.content_type != "image/png":
-    #    raise HTTPException(status_code=400, detail="Only JPEG/PNG images are allowed.")
+     # Save image to temp folder
+    image_response = await save_image_and_metadata(image, metadata)
 
-    # Validate image size (max 1MB)
-    contents = await image.read()
-
-    logger.debug(f"Received image: {image.filename} with metadata: {metadata}")
-
-    if len(contents) > 1_048_576:  # 1MB
-        raise HTTPException(status_code=400, detail="Image size exceeds 1MB.")
-
-    # Save image to temp folder
-    image_path = os.path.join(TEMP_DIR, f"{metadata.id}.jpg")
-    with open(image_path, "wb") as f:
-        f.write(contents)
-
-    logger.debug(f"Image saved to {image_path}")
+    logger.debug(f"Image saved to {image_response.image_path}")
 
     # load image and perform processing (stubbed)
-    result =  await process_image(image_path)
+    result =  await process_image(image_response.image_path)
 
     logger.debug(f"Processing result: {result}")
 
-    return ImageProcessingResponse(
-        status="success",
-        filename=image.filename,
-        stored_as=image_path,
-        metadata=metadata.dict(),
-        response = {
+    image_response.response = {
             "type_of_insects": result.get("type_of_insects") or "unknown",
             "details": result.get("details", []) or "no details available"
         } if result.get("success") else {"error": result.get("error")}
-    )
+    image_response.status = "processed" if result.get("success") else "error"
+
+    return image_response
+
+@router.post("/images/get", 
+             summary="Get a list of upload images",
+    description="List of uploaded images and their processing status.",
+    tags=["Image"])
+async def images_get_list():
+    # Stubbed: Return a list of processed images
+    images = [
+        {"id": "1", "filename": "image1.jpg", "status": "processed"},
+        {"id": "2", "filename": "image2.jpg", "status": "pending"},
+    ]
+    return {"status": "success", "images": images}
+
+@router.post("/images/get", 
+             summary="Delete image folder if should not be used for training",
+    description="Delete image by ID.",
+             tags=["Image"])
+async def image_delete(image_id: str):
+    # Stubbed: Delete image by ID
+    logger.debug(f"Deleting image with ID: {image_id}")
+    return {"status": "success", "message": f"Image {image_id} deleted."}

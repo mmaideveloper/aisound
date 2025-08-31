@@ -12,8 +12,6 @@ conda activate aisound-env
 
 ##execute api
 
-locally from parent:
-uvicorn webapi.server:app --reload
 
 localy from webpi:
 uvicorn server:app --reload

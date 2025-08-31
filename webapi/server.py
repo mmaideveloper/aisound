@@ -7,15 +7,9 @@ from pathlib import Path
 from services.logger_service import get_logger
 from endpoints.root_endpoint import router as root_router
 from endpoints.image_processing_endpoint import router as image_router
+from services.environment_service import get_env
 
-
-# Get the parent directory of the current file
-env_path = Path(__file__).resolve().parent.parent / ".env"
-
-# Load the .env file from that path
-load_dotenv(dotenv_path=env_path)
- 
-API_VERSION = os.getenv("VERSION", "0.1.0")
+API_VERSION = get_env("VERSION", "0.1.0")
 
 
 logger = get_logger("aisound-webapi")
