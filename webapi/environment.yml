@@ -12,3 +12,6 @@ dependencies:
       - pillow
       - python-multipart
       - pydantic
+      - numpy
+      - typing_extensions
+      - tensorflow

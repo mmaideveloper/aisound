@@ -10,6 +10,14 @@ Able to upload new images and label them / autio for future training
 conda env create -f environment.yml
 conda activate aisound-env
 
+conda env update --file environment.yml --prune
+
+clean env:
+
+conda env remove --name aisound-env
+
+
+
 ##execute api
 
 

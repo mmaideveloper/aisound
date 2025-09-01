@@ -23,6 +23,28 @@
 
 Model Selection
 
+go over tensofflow 2.13 and EfficinetNetB0 - modelpip show tensorflow keras
+pip show tensorflow keras
+
+- issue with models.
+
+go with PyTorch
+
+https://github.com/maxsitt/insect-detect
+
+bee model
+
+https://www.kaggle.com/datasets/jenny18/honey-bee-annotated-images
+Corresponds each image to date, time, location, subspecies, health, caste, and pollen information. 
+Labeling semi-automated by forms completed by the beekeeper who submitted the video through email.
+
+   lerning to build model from dataset:
+       https://www.kaggle.com/code/srishtimishra2512/beesnotebook
+
+general:
+https://storage.googleapis.com/openimages/web/index.html
+---
+
 Use a pre-trained model or train your own using datasets like:
 
 Honey Bee Annotated Image Dataset – includes varroa mite detection

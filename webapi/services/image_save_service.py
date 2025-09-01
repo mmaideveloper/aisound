@@ -14,6 +14,8 @@ TEMP_DIR = get_env("IMAGE_FOLDER", "temp")
 
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+#TODO: Add to azure storage and database
+
 async def save_image_and_metadata(image:any, request:ImageMetadata)-> ImageProcessingResponse:
     # Generate GUID
     guid = str(uuid.uuid4())
