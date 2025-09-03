@@ -1,7 +1,13 @@
 #!/bin/bash
+set -e
+
+#clean dockert space
+#docker system prune -a --volumes
+docker container prune -f
+docker image prune -f
 
 # Import constants
-source "$(dirname "$0")/constants.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/constants.sh"
 
 echo "Build and upload image to ACR name is: $ACR_NAME"
 
@@ -13,5 +19,5 @@ az containerapp update \
   --name $CONTAINER_APP_NAME \
   --resource-group $RESOURCE_GROUP \
   --image $FULL_IMAGE_NAME \
-  --cpu 0.5 --memory 1.0Gi 
+  --cpu 1.0 --memory 2.0Gi 
 

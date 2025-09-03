@@ -26,7 +26,8 @@ async def internal_server_error_handler(request: Request, exc: Exception):
         status_code=500,
         content={
             "error": "Internal Server Error",
-            "message": "Something went wrong on our end. Please try again later."
+            "message": "Something went wrong on our end. Please try again later.",
+            "Developer": str(exc)
         }
     )
 

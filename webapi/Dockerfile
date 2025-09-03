@@ -7,11 +7,15 @@ WORKDIR /app
 # Copy environment.yml first to leverage Docker layer caching
 COPY environment.yml .
 
+COPY .env .
+
 # Update conda and install specific version
 #ENV CONDA_PKGS_DIRS=/opt/conda/pkgs
 
 #RUN conda install -n base -c defaults conda=25.7.0
 ENV CONDA_TOS_ACCEPT=true
+#clean
+RUN conda clean --all --yes
 # Create the Conda environment
 RUN conda update -n base -c defaults conda && \
     conda env create -f environment.yml

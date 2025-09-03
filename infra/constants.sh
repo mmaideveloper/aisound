@@ -2,7 +2,7 @@
 
 # Load environment variables from .env
 set -a
-source .env
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/../webapi" && pwd)/.env"
 set +a
 
 DATA="$SECRET"

@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from services.environment_service import get_env
 
 
-API_VERSION = get_env("VERSION", "0.1.0")
+API_VERSION = get_env("VERSION", "unknown")
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger("aisound-webapi")
