@@ -4,10 +4,10 @@ import sys
 import os
 from fastapi import APIRouter
 from dotenv import load_dotenv
+from services.environment_service import get_env
 
-load_dotenv()  # Load environment variables from .env file
 
-API_VERSION = os.getenv("VERSION", "0.1.0")
+API_VERSION = get_env("VERSION", "0.1.0")
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger("aisound-webapi")

@@ -23,6 +23,22 @@
 
 Model Selection
 
+https://universe.roboflow.com/ahmedelmogtaba-ali/honey_bees_dataset
+
+or final model:
+
+https://universe.roboflow.com/maximilian-sittinger/insect_detect_detection/model/3
+
+or onnx
+https://github.com/maxsitt/insect-detect-ml/tree/main/models
+
+roboflow account: 
+
+   - create project and upload images/ videos
+   - annotate images
+   -  format?
+----
+
 go over tensofflow 2.13 and EfficinetNetB0 - modelpip show tensorflow keras
 pip show tensorflow keras
 
@@ -59,3 +75,12 @@ CNN (e.g., ResNet, EfficientNet) for classification and illness detection
 
 
 1. database to temp storage for user input images/audtio + description
+
+
+Study:
+
+https://sunnybellary.com/project/naive-bees-deep-learning-with-images/
+
+1. learn to build model from roboflow, use dataset form kaggle(bee).
+
+2. look to  https://www.kaggle.com/code/zojany/farm-insect-detection-transfer-learning-new

@@ -13,17 +13,20 @@ logger = get_logger("image-processor")
 @log_function
 async def process_image(image_path):
   
+    response : any = None
+    insect_result : any = None
+    bee_details : any = None
     try:
         
         insect_result = detect_insect(image_path)
         if insect_result["type"] != "bee":
-            return build_response(success=True, insect_type=insect_result["type"], details=[])
+            response =  build_response(success=True, insect_type=insect_result, details=[])
 
         bee_details = analyze_bee(image_path)
         
-        return build_response(success=True, insect_type="bee", details=bee_details)
+        return build_response(success=True, insect_type=insect_result, details=bee_details)
 
     except Exception as e:
-        return build_response(success=False, error=str(e))
+        return build_response(success=False, nsect_type=insect_result, details=bee_details, error=str(e))
 
 

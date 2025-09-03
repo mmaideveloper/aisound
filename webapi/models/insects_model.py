@@ -1,41 +1,47 @@
 from services.logger_service import get_logger, log_function
-import tensorflow as tf
-from tensorflow.keras.applications import EfficientNetB0
-from tensorflow.keras.applications.efficientnet import preprocess_input, decode_predictions
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.layers import Input
-from tensorflow.keras.models import Model
-
-import numpy as np
+import requests
+from services.environment_service import get_env
 
 logger = get_logger("insect-detection")
 
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+API_KEY = get_env("API_KEY_ROBOTFLOW", "")
+
+MODEL_ENDPOINT = "https://detect.roboflow.com/insect_detect_classification/1"
 
 @log_function
+#issue with EfficientNetB0 model 
 def detect_insect(image_path):
 
-    # Load pretrained EfficientNetB0
-    input_tensor = Input(shape=(224, 224, 3))
-    model = EfficientNetB0(weights='imagenet', include_top=True, input_tensor=input_tensor)
+    insete_type = "unknown",
+    confidence = 0.0
 
-    img = image.load_img(image_path, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = preprocess_input(x)
-    x = np.expand_dims(x, axis=0)
+    #open image and send to roboflow model
+    with open(image_path, "rb") as image_file:
+        response = requests.post(
+            MODEL_ENDPOINT,
+            files={"file": image_file},
+            params={ 
+                "api_key": API_KEY, 
+                "confidence": 20,
+                "overlap":0.5
+                }
+        )
 
-    # Predict using pretrained model
-    preds = model.predict(x)
-
-    # Decode top prediction
-    decoded = decode_predictions(preds, top=3)[0]  # Top 3 predictions
-    for i, (imagenet_id, label, confidence) in enumerate(decoded):
-        print(f"{i+1}. {label} ({confidence:.2f})")
-
-    # Return top result
-    insect_type, confidence = decoded[0][1], float(decoded[0][2])
+    if response.status_code == 200:
+        result = response.json()
+        if "predictions" in result and len(result["predictions"]) > 0:
+            top_prediction = max(result["predictions"], key=lambda x: x["confidence"])
+            insect_type = top_prediction["class"]
+            confidence = top_prediction["confidence"]
+            logger.info(f"Insect detected: {insect_type} with confidence {confidence}")
+        else:
+            logger.info("No insect detected in the image.")
+    else:
+        logger.error(f"Error in API request: {response.status_code} - {response.text}")
 
     return {
-        "type": insect_type,
-        "confidence": confidence
+        "type":  "bee" if "bee" in insect_type.lower() else insect_type,
+        "type_model": insect_type,
+        "confidence": confidence,
+        "success": response.status_code == 200
     }
