@@ -20,23 +20,27 @@ async def process_image_recognition(
     image: UploadFile = File(...),
     metadata: ImageMetadata = Depends()
 ):
-     # Save image to temp folder
-    image_response = await save_image_and_metadata(image, metadata)
+    try:
+        # Save image to temp folder
+        image_response = await save_image_and_metadata(image, metadata)
 
-    logger.debug(f"Image saved to {image_response.image_path}")
+        logger.debug(f"Image saved to {image_response.image_path}")
 
-    # load image and perform processing (stubbed)
-    result =  await process_image(image_response.image_path)
+        # load image and perform processing (stubbed)
+        result =  await process_image(image_response.image_path)
 
-    logger.debug(f"Processing result: {result}")
+        logger.debug(f"Processing result: {result}")
 
-    image_response.response = {
-            "type_of_insects": result.get("type_of_insects") or "unknown",
-            "details": result.get("details", []) or "no details available"
-        } if result.get("success") else {"error": result.get("error")}
-    image_response.status = "processed" if result.get("success") else "error"
+        image_response.response = {
+                "type_of_insects": result.get("type_of_insects") or "unknown",
+                "details": result.get("details", []) or "no details available"
+            } if result.get("success") else {"error": result.get("error")}
+        image_response.status = "processed" if result.get("success") else "error"
 
-    return image_response
+        return image_response
+    except Exception as e:
+        logger.error(f"Error processing image: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Error processing image: {str(e)}")
 
 @router.post("/images/get", 
              summary="Get a list of upload images",

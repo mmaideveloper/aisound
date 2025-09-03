@@ -84,3 +84,11 @@ https://sunnybellary.com/project/naive-bees-deep-learning-with-images/
 1. learn to build model from roboflow, use dataset form kaggle(bee).
 
 2. look to  https://www.kaggle.com/code/zojany/farm-insect-detection-transfer-learning-new
+
+
+---------
+Practive:
+
+model 1:
+
+source: https://www.kaggle.com/datasets/jenny18/honey-bee-annotated-images

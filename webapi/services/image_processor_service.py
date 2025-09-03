@@ -7,6 +7,7 @@ from models.bee_model import analyze_bee
 from services.response_builder_service import build_response
 from PIL import Image
 from services.logger_service import get_logger, log_function
+import traceback
 
 logger = get_logger("image-processor")
 
@@ -20,13 +21,14 @@ async def process_image(image_path):
         
         insect_result = detect_insect(image_path)
         if insect_result["type"] != "bee":
-            response =  build_response(success=True, insect_type=insect_result, details=[])
+            return  build_response(success=True, insect_type=insect_result, details=[])
 
         bee_details = analyze_bee(image_path)
         
         return build_response(success=True, insect_type=insect_result, details=bee_details)
 
     except Exception as e:
-        return build_response(success=False, nsect_type=insect_result, details=bee_details, error=str(e))
+        full_trace = traceback.format_exc()
+        return build_response(success=False, insect_type=insect_result, details=bee_details, error=str(e) + " " + full_trace)
 
 

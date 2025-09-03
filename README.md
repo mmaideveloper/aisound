@@ -53,9 +53,15 @@ get logs
 
 az containerapp logs show \
   --name api-ai-sound-local \
-  --resource-group rg-ai-sound \
+  --resource-group rg-ai-sound 
+  
   --type console \
   --follow
+
+az containerapp debug \
+  --name api-ai-sound-local \
+  --resource-group rg-ai-sound
+
 
 
 

@@ -2,4 +2,4 @@
 *.pyc
 **/__pycache__/
 **/temp/
-models/bee-image-classifier/
+**/models/bee-image-classifier/

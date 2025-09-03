@@ -11,9 +11,11 @@ logger = get_logger("bee-illness-detection")
 @log_function
 def analyze_bee(image_path):
     
+    print("Current working dir:", os.getcwd())
     # Load the model, trained on flattened image input of shape (39936,) and size 50x54
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(base_dir, '..', '..', 'models', 'bee-image-classifier','best_bright.h5')
+
+    model_path = os.path.join(base_dir, 'bee-image-classifier','best_bright.h5')
     model = load_model(model_path)
     
     logger.info(f"Model loaded from {model_path} model shape: {model.input_shape}")
@@ -64,6 +66,6 @@ def analyze_bee(image_path):
     return {
         "prediction_illness": prediction.tolist(),
         "success": True,
-        "status": "healthy" if prediction[0].argmax() == 0 else "ill",
+        "status": "healthy" if prediction[0].argmax() > 0.5 else "ill",
         "status_confidence": float(prediction[0].max())
     }
